@@ -8,7 +8,7 @@ trigger:
   - Development
 
 pool:
-  vmImage: 'windows-latest'
+  name: Azure Pipelines
 
 variables:
   solution: '**/ElevatorApp.sln'
