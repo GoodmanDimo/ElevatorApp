@@ -18,7 +18,7 @@ stages:
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
-              version: '8.0'  # Replace with the version you need
+              version: '8.x'  # Replace with the version you need
 
           - task: NuGetToolInstaller@1
 
