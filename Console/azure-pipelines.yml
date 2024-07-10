@@ -1,0 +1,48 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.m
+
+trigger:
+  - main
+  - Development
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/ElevatorApp.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildJob
+        steps:
+          - task: NuGetToolInstaller@1
+
+          - task: NuGetCommand@2
+            inputs:
+              restoreSolution: '$(solution)'
+
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: 'build'
+              arguments: '--configuration $(buildConfiguration)'
+
+          - task: DotNetCoreCLI@2
+            displayName: Publish CLI
+            inputs:
+              command: 'publish'
+              publishWebProjects: false
+              projects: '**/ElevatorApp.csproj'
+              arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)/cli'
+              zipAfterPublish: false
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(build.artifactStagingDirectory)/cli'
+              ArtifactName: 'ElevatorApp'
+              publishLocation: 'Container'
