@@ -6,3 +6,5 @@
 /.vs
 /Console/bin
 /Console/obj
+/UnitTests/bin
+/UnitTests/obj
